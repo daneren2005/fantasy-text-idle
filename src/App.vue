@@ -8,7 +8,7 @@
 	</header>
 
 	<div>
-		<Tabs :state="state" />
+		<GuiTabs :state="state" />
 
 		<v-btn @click="state.money++" style="margin-top: 1em">Get Money</v-btn>
 	</div>
@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import GameState from './components/GameState.vue';
-import Tabs from './components/Tabs.vue';
+import GuiTabs from './components/GuiTabs.vue';
 import game from '@/game';
 import { reactive } from 'vue';
 
