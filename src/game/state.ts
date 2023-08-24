@@ -1,11 +1,40 @@
+import type Property from './interfaces/property';
+
 export default class State {
-	money: number = 0;
+	running = true;
+	gametime = 0;
 	resources = {
-		Food: 0,
-		Iron: 0
+		Gold: 0,
+		Food: 10
 	};
-	workers = {
-		Food: 0,
-		Iron: 0
-	};
+	properties: Array<Property> = [
+		{
+			name: 'Farm',
+			quantity: 0,
+			upgradeCosts: {
+				Gold: {
+					base: 5
+				}
+			},
+			generate: {
+				Food: 1
+			},
+			require: {}
+		},
+		{
+			name: 'Food Stall',
+			quantity: 1,
+			upgradeCosts: {
+				Gold: {
+					base: 10
+				}
+			},
+			generate: {
+				Gold: 1
+			},
+			require: {
+				Food: 2
+			}
+		}
+	];
 }

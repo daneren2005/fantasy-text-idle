@@ -8,7 +8,7 @@
 
 		<v-window v-model="tab">
 			<v-window-item v-for="(component, tabName) in tabs" :key="tabName" :value="tabName">
-				<component :is="component" :state="state" />
+				<component :is="component" :state="state" :actions="actions" />
 			</v-window-item>
 		</v-window>
 	</v-card>
@@ -17,16 +17,18 @@
 <script setup lang="ts">
 import type State from '@/game/state';
 import { ref } from 'vue';
-import WorkersTab from './WorkersTab.vue';
+import PropertiesTab from './PropertiesTab.vue';
 import ResearchTab from './ResearchTab.vue';
+import Actions from '@/game/types/actions';
 
 defineProps<{
-	state: State
+	state: State,
+	actions: Actions
 }>();
 
 const tab = ref(null);
 const tabs = {
-	'Workers': WorkersTab,
+	'Properties': PropertiesTab,
 	'Research': ResearchTab
 };
 </script>
