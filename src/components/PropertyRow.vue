@@ -1,39 +1,41 @@
 <template>
 	<tr>
-		<td>{{ property.name }}</td>
-		<td>{{ property.quantity }}</td>
+		<td>{{ propertyName }}</td>
+		<td>{{ propertyQuantity }}</td>
 		<td>
 			{{ generateString }}
 		</td>
 		<td>
-			
+			{{ costsString }}
 		</td>
 		<td>
-			<v-btn @click="actions.buyProperty(property)" color="primary">Buy</v-btn>
+			<v-btn @click="actions.buyProperty(propertyName)" :color="buyColor">Buy</v-btn>
 		</td>
 	</tr>
 </template>
 
 
 <script setup lang="ts">
-import type Property from '@/game/interfaces/property';
+import properties from '@/game/config/properties';
+import State from '@/game/state';
 import type Actions from '@/game/types/actions';
+import PropertyTypes from '@/game/types/property-types';
 import type ResourceTypes from '@/game/types/resource-types';
+import getNextLevelCost from '@/game/utils/get-next-level-cost';
+import hasResources from '@/game/utils/has-resources';
 import { computed } from 'vue';
 
 const props = defineProps<{
-	property: Property
+	state: State
+	propertyName: PropertyTypes
 	actions: Actions
 }>();
+const property = computed(() => properties[props.propertyName]);
+const propertyQuantity = computed(() => props.state.properties[props.propertyName] ?? 0);
 
 const generateString = computed(() => {
-	let requiredString = (Object.keys(props.property.require) as Array<ResourceTypes>).map(key => {
-		return `${key}: ${(props.property.require[key] ?? 1) * props.property.quantity}`;
-	}).join(', ');
-
-	let generateString = (Object.keys(props.property.generate) as Array<ResourceTypes>).map(key => {
-		return `${key}: ${(props.property.generate[key] ?? 1) * props.property.quantity}`;
-	}).join(', ');
+	let requiredString = simpleResourcesString(property.value.require);
+	let generateString = simpleResourcesString(property.value.generate);
 
 	if(requiredString) {
 		return `${requiredString} -> ${generateString}`;
@@ -41,4 +43,15 @@ const generateString = computed(() => {
 		return generateString;
 	}
 });
+
+const costsString = computed(() => {
+	let costs = getNextLevelCost(props.state, props.propertyName);
+	return simpleResourcesString(costs);
+});
+
+function simpleResourcesString(resources: Array<{name: ResourceTypes, quantity: number}>) {
+	return resources.map(resource => `${resource.name}: ${resource.quantity}`).join(', ');
+}
+
+const buyColor = computed(() => hasResources(props.state, getNextLevelCost(props.state, props.propertyName)) ? 'primary' : 'error');
 </script>

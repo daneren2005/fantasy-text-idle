@@ -8,7 +8,7 @@
 			Resources:
 			<br/>
 			<div v-for="(value, name) in state.resources" :key="name">
-				{{ name }}: {{ Math.floor(value) }}
+				<resource-display :state="state" :name="name" />
 			</div>
 		</h3>
 	</div>
@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import type State from '@/game/state';
 import { computed } from 'vue';
+import ResourceDisplay from './ResourceDisplay.vue';
 
 const props = defineProps<{
 	state: State

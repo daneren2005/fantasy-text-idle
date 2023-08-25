@@ -1,40 +1,16 @@
-import type Property from './interfaces/property';
+import PropertyTypes from './types/property-types';
+import ResourceTypes from './types/resource-types';
 
 export default class State {
 	running = true;
 	gametime = 0;
-	resources = {
+	resources: {[K in ResourceTypes]?:number} = {
 		Gold: 0,
 		Food: 10
 	};
-	properties: Array<Property> = [
-		{
-			name: 'Farm',
-			quantity: 0,
-			upgradeCosts: {
-				Gold: {
-					base: 5
-				}
-			},
-			generate: {
-				Food: 1
-			},
-			require: {}
-		},
-		{
-			name: 'Food Stall',
-			quantity: 1,
-			upgradeCosts: {
-				Gold: {
-					base: 10
-				}
-			},
-			generate: {
-				Gold: 1
-			},
-			require: {
-				Food: 2
-			}
-		}
-	];
+	properties: {[K in PropertyTypes]?:number} = {
+		'Farm': 0,
+		'Lumber Mill': 0,
+		'Food Stall': 1
+	};
 }

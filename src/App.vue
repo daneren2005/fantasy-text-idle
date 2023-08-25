@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { onUnmounted } from 'vue';
 import GameState from './components/GameState.vue';
 import GuiTabs from './components/GuiTabs.vue';
 import game from '@/game';
@@ -21,6 +22,8 @@ const state = game.state;
 const actions = game.actions;
 
 actions.start();
+
+onUnmounted(() => actions.stop());
 </script>
 
 <style scoped>

@@ -1,13 +1,18 @@
+import properties from '../config/properties';
 import type State from '../state';
-import type ResourceTypes from '../types/resource-types';
+import PropertyTypes from '../types/property-types';
+import hasResources from '../utils/has-resources';
+import takeResources from '../utils/take-resources';
 
 const TICK_TIME = 30;
+let lastUpdateTime = 0;
 export default function start(state: State) {
 	if(!state.running) {
 		return;
 	}
 
 	state.running = true;
+	lastUpdateTime = performance.now();
 	window.setTimeout(() => {
 		runGame(state);
 	}, TICK_TIME);
@@ -17,37 +22,39 @@ function runGame(state: State) {
 	if(!state.running) {
 		return;
 	}
+	let now = performance.now();
+	let elapsedTime = now - lastUpdateTime;
 
-	// TODO: Replace with some real time tracking instead of assuming setTimeout is accurate
-	state.gametime += TICK_TIME;
-	Object.values(state.properties).forEach(property => {
-		if(property.quantity <= 0) {
-			return;
+	state.gametime += elapsedTime;
+	let elapsedSeconds = elapsedTime / 1_000;
+	let propertyName: PropertyTypes;
+	for(propertyName in state.properties) {
+		let propertyQuantity = state.properties[propertyName] ?? 0;
+		if(propertyQuantity <= 0) {
+			continue;
 		}
 
-		const missingRequiredResources = !!(Object.keys(property.require) as Array<ResourceTypes>).find(resource => {
-			const requiredQuantity = ((property.require[resource] ?? 0) * property.quantity) / TICK_TIME;
-			return state.resources[resource] <= requiredQuantity;
-		});
-		if(missingRequiredResources) {
-			return;
-		}
+		let property = properties[propertyName];
 
 		// Subtract consumed resources and generate new ones
-		(Object.keys(property.require) as Array<ResourceTypes>).forEach(resource => {
-			const addQuantity = ((property.require[resource] ?? 0) * property.quantity) / TICK_TIME;
-			state.resources[resource] -= addQuantity;
+		let require = property.require.map(resource => ({
+			name: resource.name,
+			quantity: resource.quantity * propertyQuantity * elapsedSeconds
+		}));
+		if(!hasResources(state, require)) {
+			continue;
+		}
+		
+		takeResources(state, require);
+		property.generate.forEach(resource => {
+			const addQuantity = (resource.quantity * propertyQuantity) * elapsedSeconds;
+			state.resources[resource.name] = (state.resources[resource.name] ?? 0) + addQuantity;
 		});
-		(Object.keys(property.generate) as Array<ResourceTypes>).forEach(resource => {
-			const addQuantity = ((property.generate[resource] ?? 0) * property.quantity) / TICK_TIME;
+	}
+	// TODO: Run a second pass on only properties that failed the first time in case we now have enough resources for it to production
+	// This is mostly going to be important on throttled timers where we are updating 1 minute at a time
 
-			if(!state.resources[resource]) {
-				state.resources[resource] = 0;
-			}
-			state.resources[resource] += addQuantity;
-		});
-	});
-
+	lastUpdateTime = now;
 	window.setTimeout(() => {
 		runGame(state);
 	}, TICK_TIME);

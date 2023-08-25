@@ -12,7 +12,7 @@
 			</thead>
 
 			<tbody>
-				<property-row v-for="property in state.properties" :key="property.name" :property="property" :actions="actions" />
+				<property-row v-for="(propertyQuantity, propertyName) in state.properties" :key="propertyName" :state="state" :property-name="propertyName" :actions="actions" />
 			</tbody>
 		</v-table>
 	</div>
