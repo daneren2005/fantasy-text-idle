@@ -13,4 +13,19 @@ export default class State {
 		'Lumber Mill': 0,
 		'Food Stall': 1
 	};
+
+	save() {
+		return JSON.stringify({
+			running: this.running,
+			gametime: this.gametime,
+			resources: this.resources,
+			properties: this.properties
+		});
+	}
+	load(config: any) {
+		Object.keys(config).forEach(key => {
+			// @ts-expect-error
+			this[key] = config[key];
+		});
+	}
 }

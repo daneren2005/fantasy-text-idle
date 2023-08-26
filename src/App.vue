@@ -21,7 +21,7 @@ import game from '@/game';
 const state = game.state;
 const actions = game.actions;
 
-actions.start();
+actions.loadStart().then(() => actions.start());
 
 onUnmounted(() => actions.stop());
 </script>
