@@ -28,7 +28,7 @@
 import type State from '@/game/state';
 import { ref } from 'vue';
 import PropertiesTab from './PropertiesTab.vue';
-import ResearchTab from './ResearchTab.vue';
+import NobilityTab from './NobilityTab.vue';
 import Actions from '@/game/types/actions';
 import SettingsTab from './SettingsTab.vue';
 import { computed } from 'vue';
@@ -41,7 +41,7 @@ defineProps<{
 const tab = ref('Properties');
 const tabs = {
 	'Properties': PropertiesTab,
-	'Research': ResearchTab,
+	'Nobility': NobilityTab,
 	'Settings': SettingsTab
 };
 const displayedTabs = computed(() => Object.keys(tabs).filter(tab => tab !== 'Settings'));

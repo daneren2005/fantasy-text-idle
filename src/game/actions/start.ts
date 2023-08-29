@@ -1,3 +1,4 @@
+import nobilities from '../config/nobilities';
 import properties from '../config/properties';
 import type State from '../state';
 import PropertyTypes from '../types/property-types';
@@ -31,6 +32,7 @@ async function runGame(state: State) {
 	state.gametime += elapsedTime;
 	let elapsedSeconds = elapsedTime / 1_000;
 	let propertyName: PropertyTypes;
+	// TODO: Divide production evenly by percentage of consumption when consumption > production
 	for(propertyName in state.properties) {
 		let propertyQuantity = state.properties[propertyName] ?? 0;
 		if(propertyQuantity <= 0) {
@@ -40,17 +42,22 @@ async function runGame(state: State) {
 		let property = properties[propertyName];
 
 		// Subtract consumed resources and generate new ones
-		let require = property.require.map(resource => ({
+		let require = property.consume.map(resource => ({
 			name: resource.name,
 			quantity: resource.quantity * propertyQuantity * elapsedSeconds
 		}));
 		if(!hasResources(state, require)) {
 			continue;
 		}
-		
+
+		let nobility = nobilities[state.nobility];
 		takeResources(state, require);
 		property.generate.forEach(resource => {
-			const addQuantity = (resource.quantity * propertyQuantity) * elapsedSeconds;
+			let addQuantity = (resource.quantity * propertyQuantity) * elapsedSeconds;
+			let nobilityBonusMultipler = nobility.perks.resourceMultipler?.[resource.name];
+			if(nobilityBonusMultipler) {
+				addQuantity = addQuantity * nobilityBonusMultipler;
+			}
 			state.resources[resource.name] = (state.resources[resource.name] ?? 0) + addQuantity;
 		});
 	}

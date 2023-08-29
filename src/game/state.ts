@@ -4,6 +4,7 @@ import ResourceTypes from './types/resource-types';
 export default class State {
 	running = true;
 	gametime = 0;
+	nobility = 0;
 	resources: {[K in ResourceTypes]?:number} = {
 		Gold: 0,
 		Food: 10
@@ -18,6 +19,7 @@ export default class State {
 		return JSON.stringify({
 			running: this.running,
 			gametime: this.gametime,
+			nobility: this.nobility,
 			resources: this.resources,
 			properties: this.properties
 		});

@@ -1,7 +1,7 @@
 import State from '../state';
-import ResourceTypes from '../types/resource-types';
+import Resources from '../types/resources';
 
-export default function takeResources(state: State, resources: Array<{name: ResourceTypes, quantity: number}>) {
+export default function takeResources(state: State, resources: Resources) {
 	for(let i = 0; i < resources.length; i++) {
 		let resource = resources[i];
 

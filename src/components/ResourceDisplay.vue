@@ -2,8 +2,8 @@
 	<div>
 		{{ name }}: {{ Math.floor(currentAmount) }}
 
-		<span v-if="income > 0" class="text-light-blue income">+{{ income }}/sec</span>
-		<span v-else-if="income < 0" class="text-red income">{{ income }}/sec</span>
+		<span v-if="income > 0" class="text-light-blue income">+{{ Math.round(income * 10) / 10 }}/sec</span>
+		<span v-else-if="income < 0" class="text-red income">{{ Math.round(income * 10) / 10 }}/sec</span>
 	</div>
 </template>
 

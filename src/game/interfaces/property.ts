@@ -1,14 +1,10 @@
-import type ResourceTypes from '../types/resource-types';
+import Resources from '../types/resources';
+import UpgradeCosts from '../types/upgrade-costs';
 
 interface Property {
-	upgradeCosts: {[K in ResourceTypes]?:UpgradeCost}
-	generate: Array<{name: ResourceTypes, quantity: number}>
-	require: Array<{name: ResourceTypes, quantity: number}>
-}
-
-interface UpgradeCost {
-	base: number
-	exponent: number
+	upgradeCosts: UpgradeCosts
+	generate: Resources
+	consume: Resources
 }
 
 export default Property;

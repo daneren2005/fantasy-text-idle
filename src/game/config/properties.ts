@@ -15,7 +15,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 				quantity: 1
 			}
 		],
-		require: []
+		consume: []
 	},
 	'Lumber Mill': {
 		upgradeCosts: {
@@ -30,7 +30,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 				quantity: 2
 			}
 		],
-		require: [
+		consume: [
 			{
 				name: 'Food',
 				quantity: 1
@@ -54,7 +54,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 				quantity: 1
 			}
 		],
-		require: [
+		consume: [
 			{
 				name: 'Food',
 				quantity: 2

@@ -20,10 +20,11 @@ import properties from '@/game/config/properties';
 import State from '@/game/state';
 import type Actions from '@/game/types/actions';
 import PropertyTypes from '@/game/types/property-types';
-import type ResourceTypes from '@/game/types/resource-types';
-import getNextLevelCost from '@/game/utils/get-next-level-cost';
+import { getNextLevelCostProperty } from '@/game/utils/get-next-level-cost';
 import hasResources from '@/game/utils/has-resources';
 import { computed } from 'vue';
+import simpleResourcesString from './utils/simple-resources-string';
+import nobilities from '@/game/config/nobilities';
 
 const props = defineProps<{
 	state: State
@@ -33,25 +34,36 @@ const props = defineProps<{
 const property = computed(() => properties[props.propertyName]);
 const propertyQuantity = computed(() => props.state.properties[props.propertyName] ?? 0);
 
+const nobilityConfig = computed(() => nobilities[props.state.nobility]);
 const generateString = computed(() => {
-	let requiredString = simpleResourcesString(property.value.require);
-	let generateString = simpleResourcesString(property.value.generate);
+	let consumeString = simpleResourcesString(property.value.consume.map(resource => ({
+		name: resource.name,
+		quantity: resource.quantity * (props.state.properties[props.propertyName] ?? 0)
+	})));
+	let generateString = simpleResourcesString(property.value.generate.map(resource => {
+		let resourceMultiplier = 1;
+		let nobilityMultiplier = nobilityConfig.value.perks.resourceMultipler?.[resource.name];
+		if(nobilityMultiplier) {
+			resourceMultiplier = nobilityMultiplier;
+		}
 
-	if(requiredString) {
-		return `${requiredString} -> ${generateString}`;
+		return {
+			name: resource.name,
+			quantity: resource.quantity * (props.state.properties[props.propertyName] ?? 0) * resourceMultiplier
+		};
+	}));
+
+	if(consumeString) {
+		return `${consumeString} -> ${generateString}`;
 	} else {
 		return generateString;
 	}
 });
 
 const costsString = computed(() => {
-	let costs = getNextLevelCost(props.state, props.propertyName);
+	let costs = getNextLevelCostProperty(props.state, props.propertyName);
 	return simpleResourcesString(costs);
 });
 
-function simpleResourcesString(resources: Array<{name: ResourceTypes, quantity: number}>) {
-	return resources.map(resource => `${resource.name}: ${resource.quantity}`).join(', ');
-}
-
-const buyColor = computed(() => hasResources(props.state, getNextLevelCost(props.state, props.propertyName)) ? 'primary' : 'error');
+const buyColor = computed(() => hasResources(props.state, getNextLevelCostProperty(props.state, props.propertyName)) ? 'primary' : 'error');
 </script>
