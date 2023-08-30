@@ -11,10 +11,6 @@ const AUTO_SAVE_TIME = 1_000;
 let lastUpdateTime = 0;
 let lastSavedTime = 0;
 export default function start(state: State) {
-	if(!state.running) {
-		return;
-	}
-
 	state.running = true;
 	lastUpdateTime = lastSavedTime = performance.now();
 	window.setTimeout(() => {

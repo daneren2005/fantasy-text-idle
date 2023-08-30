@@ -46,6 +46,8 @@ import simpleResourcesString from './utils/simple-resources-string';
 import hasResources from '@/game/utils/has-resources';
 import Nobility from '@/game/interfaces/nobility';
 import ResourceTypes from '@/game/types/resource-types';
+import properties from '@/game/config/properties';
+import PropertyTypes from '@/game/types/property-types';
 
 const props = defineProps<{
 	state: State,
@@ -75,6 +77,15 @@ function getPerks(nobilityConfig: Nobility) {
 		for(resource in nobilityConfig.perks.resourceMultipler) {
 			perks.push(`Increase ${resource} production: ${Math.round(((nobilityConfig.perks.resourceMultipler[resource] ?? 1) - 1) * 100)}%`);
 		}
+	}
+
+	let unlockedProperties = Object.keys(properties) as Array<PropertyTypes>;
+	unlockedProperties = unlockedProperties.filter(propertyName => {
+		let property = properties[propertyName];
+		return property.requireNobility && nobilityConfig.name === property.requireNobility;
+	});
+	if(unlockedProperties.length) {
+		perks.push(`Unlocks new properties: ${unlockedProperties.join(', ')}`);
 	}
 
 	return perks.length ? perks : ['NONE'];

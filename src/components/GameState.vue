@@ -3,6 +3,9 @@
 		<h1 class="green">Idle Sim</h1>
 		<h3>
 			Time: {{ formattedTime }}
+
+			<v-btn icon @click="actions.stop" color="error" variant="outlined" v-if="state.running"><v-icon>pause</v-icon></v-btn>
+			<v-btn icon @click="actions.start" color="primary" v-else><v-icon>play_arrow</v-icon></v-btn>
 		</h3>
 		<h3>
 			Resources:
@@ -18,9 +21,11 @@
 import type State from '@/game/state';
 import { computed } from 'vue';
 import ResourceDisplay from './ResourceDisplay.vue';
+import Actions from '@/game/types/actions';
 
 const props = defineProps<{
-	state: State
+	state: State,
+	actions: Actions
 }>();
 
 const formattedTime = computed(() => {

@@ -6,7 +6,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 		upgradeCosts: {
 			Gold: {
 				base: 2,
-				exponent: 1.5
+				exponent: 1.2
 			}
 		},
 		generate: [
@@ -60,6 +60,56 @@ const properties: {[K in PropertyTypes]:Property} = {
 				quantity: 2
 			}
 		]
+	},
+	'Paper Mill': {
+		upgradeCosts: {
+			Gold: {
+				base: 50,
+				exponent: 1.2
+			}
+		},
+		generate: [
+			{
+				name: 'Paper',
+				quantity: 10
+			}
+		],
+		consume: [
+			{
+				name: 'Wood',
+				quantity: 2
+			},
+			{
+				name: 'Food',
+				quantity: 1
+			}
+		],
+		requireNobility: 'Land Owner'
+	},
+	'Publisher House': {
+		upgradeCosts: {
+			Gold: {
+				base: 200,
+				exponent: 1.5
+			}
+		},
+		generate: [
+			{
+				name: 'Gold',
+				quantity: 10
+			}
+		],
+		consume: [
+			{
+				name: 'Paper',
+				quantity: 20
+			},
+			{
+				name: 'Food',
+				quantity: 2
+			}
+		],
+		requireNobility: 'Merchant'
 	}
 };
 

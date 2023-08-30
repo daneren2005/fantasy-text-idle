@@ -12,7 +12,7 @@
 			</thead>
 
 			<tbody>
-				<property-row v-for="(propertyQuantity, propertyName) in state.properties" :key="propertyName" :state="state" :property-name="propertyName" :actions="actions" />
+				<property-row v-for="propertyName in allowedProperties" :key="propertyName" :state="state" :property-name="propertyName" :actions="actions" />
 			</tbody>
 		</v-table>
 	</div>
@@ -22,11 +22,28 @@
 import type State from '@/game/state';
 import type Actions from '@/game/types/actions';
 import PropertyRow from './PropertyRow.vue';
+import { computed } from 'vue';
+import PropertyTypes from '@/game/types/property-types';
+import properties from '@/game/config/properties';
+import nobilities from '@/game/config/nobilities';
 
-defineProps<{
+const props = defineProps<{
 	state: State,
 	actions: Actions
 }>();
+
+const allowedProperties = computed(() => {
+	let propertyNames = Object.keys(props.state.properties) as Array<PropertyTypes>;
+	
+	return propertyNames.filter(propertyName => {
+		let propertyConfig = properties[propertyName];
+		if(propertyConfig.requireNobility) {
+			return nobilities[props.state.nobility].name === propertyConfig.requireNobility;
+		} else {
+			return true;
+		}
+	});
+});
 </script>
 
 <style scoped>

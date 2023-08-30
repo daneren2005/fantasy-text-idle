@@ -28,7 +28,7 @@ const nobilities: Array<Nobility> = [
 		},
 		upgradeCosts: {
 			Gold: {
-				base: 40,
+				base: 80,
 				exponent: 2
 			}
 		}

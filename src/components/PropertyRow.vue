@@ -38,7 +38,7 @@ const nobilityConfig = computed(() => nobilities[props.state.nobility]);
 const generateString = computed(() => {
 	let consumeString = simpleResourcesString(property.value.consume.map(resource => ({
 		name: resource.name,
-		quantity: resource.quantity * (props.state.properties[props.propertyName] ?? 0)
+		quantity: resource.quantity * (props.state.properties[props.propertyName] || 1)
 	})));
 	let generateString = simpleResourcesString(property.value.generate.map(resource => {
 		let resourceMultiplier = 1;
@@ -49,7 +49,7 @@ const generateString = computed(() => {
 
 		return {
 			name: resource.name,
-			quantity: resource.quantity * (props.state.properties[props.propertyName] ?? 0) * resourceMultiplier
+			quantity: resource.quantity * (props.state.properties[props.propertyName] || 1) * resourceMultiplier
 		};
 	}));
 

@@ -1,3 +1,3 @@
-type ResourceTypes = 'Gold' | 'Food' | 'Wood';
+type ResourceTypes = 'Gold' | 'Food' | 'Wood' | 'Paper';
 
 export default ResourceTypes;

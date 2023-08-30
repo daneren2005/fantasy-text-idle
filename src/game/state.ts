@@ -12,7 +12,9 @@ export default class State {
 	properties: {[K in PropertyTypes]?:number} = {
 		'Farm': 0,
 		'Lumber Mill': 0,
-		'Food Stall': 1
+		'Food Stall': 1,
+		'Paper Mill': 0,
+		'Publisher House': 0
 	};
 
 	save() {
