@@ -1,5 +1,6 @@
 import PropertyTypes from './types/property-types';
 import ResourceTypes from './types/resource-types';
+import SkillTypes from './types/skill-types';
 
 export default class State {
 	running = true;
@@ -9,12 +10,17 @@ export default class State {
 		Gold: 0,
 		Food: 10
 	};
-	properties: {[K in PropertyTypes]?:number} = {
+	properties: {[K in PropertyTypes]:number} = {
 		'Farm': 0,
 		'Lumber Mill': 0,
 		'Food Stall': 1,
 		'Paper Mill': 0,
 		'Publisher House': 0
+	};
+	skill: number = 0;
+	skills: {[K in SkillTypes]:number} = {
+		'Green Thumb': 0,
+		'Negotiator': 0
 	};
 
 	save() {
@@ -23,7 +29,9 @@ export default class State {
 			gametime: this.gametime,
 			nobility: this.nobility,
 			resources: this.resources,
-			properties: this.properties
+			properties: this.properties,
+			skill: this.skill,
+			skills: this.skills
 		});
 	}
 	load(config: any) {

@@ -60,6 +60,8 @@ async function runGame(state: State) {
 	// TODO: Run a second pass on only properties that failed the first time in case we now have enough resources for it to production
 	// This is mostly going to be important on throttled timers where we are updating 1 minute at a time
 
+	state.skill += 1 * elapsedSeconds;
+
 	if((lastSavedTime + AUTO_SAVE_TIME) < now) {
 		await autoSave(state);
 		lastSavedTime = now;

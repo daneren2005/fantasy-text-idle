@@ -7,13 +7,20 @@
 			<v-btn icon @click="actions.stop" color="error" variant="outlined" v-if="state.running"><v-icon>pause</v-icon></v-btn>
 			<v-btn icon @click="actions.start" color="primary" v-else><v-icon>play_arrow</v-icon></v-btn>
 		</h3>
+
+		<h3 style="margin-bottom: 0.5em">
+			Skill Points: {{ Math.floor(state.skill) }}
+			<span class="text-light-blue income">+1/sec</span>
+		</h3>
+
 		<h3>
 			Resources:
-			<br/>
+		</h3>
+		<div>
 			<div v-for="(value, name) in state.resources" :key="name">
 				<resource-display :state="state" :name="name" />
 			</div>
-		</h3>
+		</div>
 	</div>
 </template>
 

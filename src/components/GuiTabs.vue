@@ -32,6 +32,7 @@ import NobilityTab from './NobilityTab.vue';
 import Actions from '@/game/types/actions';
 import SettingsTab from './SettingsTab.vue';
 import { computed } from 'vue';
+import SkillsTab from './SkillsTab.vue';
 
 defineProps<{
 	state: State,
@@ -42,6 +43,7 @@ const tab = ref('Properties');
 const tabs = {
 	'Properties': PropertiesTab,
 	'Nobility': NobilityTab,
+	'Skills': SkillsTab,
 	'Settings': SettingsTab
 };
 const displayedTabs = computed(() => Object.keys(tabs).filter(tab => tab !== 'Settings'));
