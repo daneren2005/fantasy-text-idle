@@ -4,12 +4,6 @@
 			<v-card-title>
 				Current rank: {{ nobilityConfig.name }}
 			</v-card-title>
-			<v-card-subtitle class="text-h6">
-				Current Perks:
-			</v-card-subtitle>
-			<v-card-text>
-				<div v-for="perk in currentPerks" :key="perk">{{ perk }}</div>
-			</v-card-text>
 			<template v-if="nextNobilityConfig">
 				<v-card-subtitle class="text-h6">
 					Cost to upgrade:
@@ -45,9 +39,10 @@ import { computed } from 'vue';
 import simpleResourcesString from './utils/simple-resources-string';
 import hasResources from '@/game/utils/has-resources';
 import Nobility from '@/game/interfaces/nobility';
-import ResourceTypes from '@/game/types/resource-types';
 import properties from '@/game/config/properties';
 import PropertyTypes from '@/game/types/property-types';
+import skills from '@/game/config/skills';
+import SkillTypes from '@/game/types/skill-types';
 
 const props = defineProps<{
 	state: State,
@@ -55,7 +50,6 @@ const props = defineProps<{
 }>();
 
 const nobilityConfig = computed(() => nobilities[props.state.nobility]);
-const currentPerks = computed(() => getPerks(nobilityConfig.value));
 
 const nextNobilityConfig = computed(() => nobilities[props.state.nobility + 1]);
 const upgradeCosts = computed(() => getNextLevelCost(nextNobilityConfig.value.upgradeCosts, 0));
@@ -69,14 +63,13 @@ const upgradeCostsString = computed(() => {
 function getPerks(nobilityConfig: Nobility) {
 	let perks: Array<string> = [];
 
-	if(nobilityConfig.perks.propertyCostMultipler) {
-		perks.push(`Decrease property upgrade costs by: ${Math.round((1 - nobilityConfig.perks.propertyCostMultipler) * 100)}%`);
-	}
-	if(nobilityConfig.perks.resourceMultipler) {
-		let resource: ResourceTypes;
-		for(resource in nobilityConfig.perks.resourceMultipler) {
-			perks.push(`Increase ${resource} production: ${Math.round(((nobilityConfig.perks.resourceMultipler[resource] ?? 1) - 1) * 100)}%`);
-		}
+	let unlockedSkills = Object.keys(skills) as Array<SkillTypes>;
+	unlockedSkills = unlockedSkills.filter(name => {
+		let skill = skills[name];
+		return skill.requireNobility && nobilityConfig.name === skill.requireNobility;
+	});
+	if(unlockedSkills.length) {
+		perks.push(`Unlocks new skills: ${unlockedSkills.join(', ')}`);
 	}
 
 	let unlockedProperties = Object.keys(properties) as Array<PropertyTypes>;

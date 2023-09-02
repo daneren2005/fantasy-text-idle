@@ -25,7 +25,7 @@ import PropertyRow from './PropertyRow.vue';
 import { computed } from 'vue';
 import PropertyTypes from '@/game/types/property-types';
 import properties from '@/game/config/properties';
-import nobilities from '@/game/config/nobilities';
+import hasNobility from '@/game/utils/has-nobility';
 
 const props = defineProps<{
 	state: State,
@@ -38,7 +38,7 @@ const allowedProperties = computed(() => {
 	return propertyNames.filter(propertyName => {
 		let propertyConfig = properties[propertyName];
 		if(propertyConfig.requireNobility) {
-			return nobilities[props.state.nobility].name === propertyConfig.requireNobility;
+			return hasNobility(propertyConfig.requireNobility, props.state);
 		} else {
 			return true;
 		}

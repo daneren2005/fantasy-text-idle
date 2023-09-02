@@ -20,7 +20,8 @@ export default class State {
 	skill: number = 0;
 	skills: {[K in SkillTypes]:number} = {
 		'Green Thumb': 0,
-		'Negotiator': 0
+		'Negotiator': 0,
+		'Lender': 0
 	};
 
 	save() {
@@ -37,7 +38,17 @@ export default class State {
 	load(config: any) {
 		Object.keys(config).forEach(key => {
 			// @ts-expect-error
-			this[key] = config[key];
+			// eslint-disable-next-line
+			if(Object.getPrototypeOf(config[key]).isPrototypeOf(Object) && Object.getPrototypeOf(this[key]).isPrototypeOf(Object)) {
+				// If we add a new skill or property, want to do this recursively so they get added to the list
+				for(let subKey in config[key]) {
+					// @ts-expect-error
+					this[key][subKey] = config[key][subKey];
+				}
+			} else {
+				// @ts-expect-error
+				this[key] = config[key];
+			}
 		});
 	}
 }

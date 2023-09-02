@@ -2,6 +2,7 @@ import nobilities from '../config/nobilities';
 import properties from '../config/properties';
 import type State from '../state';
 import PropertyTypes from '../types/property-types';
+import getGeneratedResource from '../utils/get-generated-resource';
 import hasResources from '../utils/has-resources';
 import takeResources from '../utils/take-resources';
 import autoSave from './auto-save';
@@ -46,21 +47,17 @@ async function runGame(state: State) {
 			continue;
 		}
 
-		let nobility = nobilities[state.nobility];
 		takeResources(state, require);
 		property.generate.forEach(resource => {
-			let addQuantity = (resource.quantity * propertyQuantity) * elapsedSeconds;
-			let nobilityBonusMultipler = nobility.perks.resourceMultipler?.[resource.name];
-			if(nobilityBonusMultipler) {
-				addQuantity = addQuantity * nobilityBonusMultipler;
-			}
+			let addQuantity = getGeneratedResource(resource.name, (resource.quantity * propertyQuantity) * elapsedSeconds, state);
 			state.resources[resource.name] = (state.resources[resource.name] ?? 0) + addQuantity;
 		});
 	}
 	// TODO: Run a second pass on only properties that failed the first time in case we now have enough resources for it to production
 	// This is mostly going to be important on throttled timers where we are updating 1 minute at a time
 
-	state.skill += 1 * elapsedSeconds;
+	let nobility = nobilities[state.nobility];
+	state.skill += nobility.skillPoints * elapsedSeconds;
 
 	if((lastSavedTime + AUTO_SAVE_TIME) < now) {
 		await autoSave(state);

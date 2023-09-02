@@ -6,6 +6,8 @@ import autoSave from './auto-save';
 import start from './start';
 import stop from './stop';
 import upgradeNobility from './upgrade-nobility';
+import upgradeSkill from './upgrade-skill';
+import SkillTypes from '../types/skill-types';
 
 export default function createActions(state: State) {
 	return {
@@ -14,6 +16,7 @@ export default function createActions(state: State) {
 		autoSave: () => autoSave(state),
 		loadStart: () => loadStart(state),
 		buyProperty: (propertyName: PropertyTypes) => buyProperty(state, propertyName),
-		upgradeNobility: () => upgradeNobility(state)
+		upgradeNobility: () => upgradeNobility(state),
+		upgradeSkill: (skillName: SkillTypes) => upgradeSkill(state, skillName)
 	};
 }

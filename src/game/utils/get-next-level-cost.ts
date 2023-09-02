@@ -1,9 +1,10 @@
-import nobilities from '../config/nobilities';
 import properties from '../config/properties';
+import skills from '../config/skills';
 import State from '../state';
 import PropertyTypes from '../types/property-types';
 import ResourceTypes from '../types/resource-types';
 import Resources from '../types/resources';
+import SkillTypes from '../types/skill-types';
 import UpgradeCosts from '../types/upgrade-costs';
 
 export default function getNextLevelCost(upgradeCosts: UpgradeCosts, quantity: number): Resources {
@@ -27,10 +28,16 @@ export default function getNextLevelCost(upgradeCosts: UpgradeCosts, quantity: n
 
 function getNextLevelCostProperty(state: State, propertyName: PropertyTypes): Resources {
 	let resourceMultipler = 1;
-	if(state.nobility) {
-		let nobility = nobilities[state.nobility];
-		if(nobility.perks.propertyCostMultipler) {
-			resourceMultipler = nobility.perks.propertyCostMultipler;
+	let skillName: SkillTypes;
+	for(skillName in state.skills) {
+		let level = state.skills[skillName];
+		if(level <= 0) {
+			continue;
+		}
+
+		let skill = skills[skillName];
+		if(skill.perks.propertyCostMultipler) {
+			resourceMultipler -= skill.perks.propertyCostMultipler * level;
 		}
 	}
 

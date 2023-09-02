@@ -1,13 +1,13 @@
-import nobilities from '../config/nobilities';
 import properties from '../config/properties';
 import State from '../state';
 import PropertyTypes from '../types/property-types';
 import ResourceTypes from '../types/resource-types';
+import getGeneratedResource from './get-generated-resource';
 
 export default function getResourceIncome(state: State, name: ResourceTypes) {
-	let income = 0;
+	let generate = 0;
+	let consume = 0;
 	
-	let nobility = nobilities[state.nobility];
 	let propertyName: PropertyTypes;
 	for(propertyName in state.properties) {
 		let property = properties[propertyName];
@@ -18,8 +18,7 @@ export default function getResourceIncome(state: State, name: ResourceTypes) {
 				return;
 			}
 
-			let nobilityBonusMultipler = nobility.perks.resourceMultipler?.[resource.name] ?? 1;
-			income += resource.quantity * propertyQuantity * nobilityBonusMultipler;
+			generate += getGeneratedResource(resource.name, resource.quantity * propertyQuantity, state);
 		});
 
 		property.consume.forEach(resource => {
@@ -27,9 +26,13 @@ export default function getResourceIncome(state: State, name: ResourceTypes) {
 				return;
 			}
 
-			income -= resource.quantity * propertyQuantity;
+			consume += resource.quantity * propertyQuantity;
 		});
 	}
 
-	return income;
+	return {
+		income: (generate - consume),
+		generate,
+		consume
+	};
 }

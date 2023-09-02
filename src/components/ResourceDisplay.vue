@@ -2,8 +2,12 @@
 	<div>
 		{{ name }}: {{ Math.floor(currentAmount) }}
 
-		<span v-if="income > 0" class="text-light-blue income">+{{ Math.round(income * 10) / 10 }}/sec</span>
-		<span v-else-if="income < 0" class="text-red income">{{ Math.round(income * 10) / 10 }}/sec</span>
+		<v-tooltip :text="tooltip" location="top">
+			<template v-slot:activator="{ props }">
+				<span v-if="income.income > 0" class="text-light-blue income" v-bind="props">+{{ Math.round(income.income * 10) / 10 }}/sec</span>
+				<span v-else-if="income.income < 0" class="text-red income" v-bind="props">{{ Math.round(income.income * 10) / 10 }}/sec</span>
+			</template>
+		</v-tooltip>
 	</div>
 </template>
 
@@ -20,6 +24,7 @@ const props = defineProps<{
 
 const currentAmount = computed(() => props.state.resources[props.name] ?? 0);
 const income = computed(() => getResourceIncome(props.state, props.name));
+const tooltip = computed(() => `+${Math.round(income.value.generate * 10) / 10} - ${Math.round(income.value.consume * 10) / 10} = ${Math.round(income.value.income * 10) / 10}`);
 </script>
 
 <style scoped>

@@ -10,7 +10,7 @@
 
 		<h3 style="margin-bottom: 0.5em">
 			Skill Points: {{ Math.floor(state.skill) }}
-			<span class="text-light-blue income">+1/sec</span>
+			<span class="text-light-blue income">+{{ skillPointsPerSecond }}/sec</span>
 		</h3>
 
 		<h3>
@@ -29,6 +29,7 @@ import type State from '@/game/state';
 import { computed } from 'vue';
 import ResourceDisplay from './ResourceDisplay.vue';
 import Actions from '@/game/types/actions';
+import nobilities from '@/game/config/nobilities';
 
 const props = defineProps<{
 	state: State,
@@ -42,6 +43,11 @@ const formattedTime = computed(() => {
 	let seconds = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
 
 	return `${hours}:${minutes}:${seconds}`;
+});
+const skillPointsPerSecond = computed(() => {
+	let nobility = nobilities[props.state.nobility];
+
+	return nobility.skillPoints;
 });
 </script>
 

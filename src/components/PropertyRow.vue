@@ -24,7 +24,7 @@ import { getNextLevelCostProperty } from '@/game/utils/get-next-level-cost';
 import hasResources from '@/game/utils/has-resources';
 import { computed } from 'vue';
 import simpleResourcesString from './utils/simple-resources-string';
-import nobilities from '@/game/config/nobilities';
+import getGeneratedResource from '@/game/utils/get-generated-resource';
 
 const props = defineProps<{
 	state: State
@@ -34,22 +34,15 @@ const props = defineProps<{
 const property = computed(() => properties[props.propertyName]);
 const propertyQuantity = computed(() => props.state.properties[props.propertyName] ?? 0);
 
-const nobilityConfig = computed(() => nobilities[props.state.nobility]);
 const generateString = computed(() => {
 	let consumeString = simpleResourcesString(property.value.consume.map(resource => ({
 		name: resource.name,
 		quantity: resource.quantity * (props.state.properties[props.propertyName] || 1)
 	})));
 	let generateString = simpleResourcesString(property.value.generate.map(resource => {
-		let resourceMultiplier = 1;
-		let nobilityMultiplier = nobilityConfig.value.perks.resourceMultipler?.[resource.name];
-		if(nobilityMultiplier) {
-			resourceMultiplier = nobilityMultiplier;
-		}
-
 		return {
 			name: resource.name,
-			quantity: resource.quantity * (props.state.properties[props.propertyName] || 1) * resourceMultiplier
+			quantity: getGeneratedResource(resource.name, resource.quantity * (props.state.properties[props.propertyName] || 1), props.state)
 		};
 	}));
 

@@ -12,7 +12,7 @@
 			</thead>
 
 			<tbody>
-				<skill-row :state="state" :actions="actions" v-for="skill in allowedSkills" :skill-name="skill" />
+				<skill-row :state="state" :actions="actions" v-for="skill in allowedSkills" :key="skill" :skill-name="skill" />
 			</tbody>
 		</v-table>
 	</div>
@@ -25,7 +25,7 @@ import SkillRow from './SkillRow.vue';
 import { computed } from 'vue';
 import SkillTypes from '@/game/types/skill-types';
 import skills from '@/game/config/skills';
-import nobilities from '@/game/config/nobilities';
+import hasNobility from '@/game/utils/has-nobility';
 
 const props = defineProps<{
 	state: State,
@@ -38,7 +38,7 @@ const allowedSkills = computed(() => {
 	return skillNames.filter(propertyName => {
 		let config = skills[propertyName];
 		if(config.requireNobility) {
-			return nobilities[props.state.nobility].name === config.requireNobility;
+			return hasNobility(config.requireNobility, props.state);
 		} else {
 			return true;
 		}
