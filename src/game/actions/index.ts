@@ -1,7 +1,7 @@
 import type State from '../state';
 import PropertyTypes from '../types/property-types';
 import buyProperty from './buy-property';
-import loadStart from './loadStart';
+import loadStart from './load-start';
 import autoSave from './auto-save';
 import start from './start';
 import stop from './stop';

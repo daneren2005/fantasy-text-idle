@@ -1,8 +1,8 @@
 <template>
 	<v-dialog
 		:modelValue="modelValue"
-		@update:modelValue="modalValue = $event"
-		@keydown.esc="$emit('update:modelValue', false) && $emit('cancelled')"
+		@update:modelValue="$emit('update:modelValue', $event)"
+		@keydown.esc="$emit('update:modelValue', false); $emit('cancelled')"
 		width="auto"
 	>
 		<v-card>
@@ -19,7 +19,6 @@
 				<v-spacer></v-spacer>
 				<v-btn
 					color="grey"
-					text
 					class="body-2 font-weight-bold"
 					@click="$emit('cancelled')"
 					>Cancel</v-btn>

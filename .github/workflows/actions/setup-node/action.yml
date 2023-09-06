@@ -1,0 +1,23 @@
+name: "Setup node"
+description: "Installs node.js and node_modules"
+
+inputs:
+  node-version: 
+    description: 'Node JS Version'
+    default: '18.x'
+
+runs:
+  using: "composite"
+  steps: 
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+    - uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ inputs.node-version }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ inputs.node-version }}-
+    - run: npm ci --prefer-offline
+      shell: bash
