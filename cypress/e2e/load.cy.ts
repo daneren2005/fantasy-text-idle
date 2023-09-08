@@ -1,5 +1,6 @@
 // https://on.cypress.io/api
 
+/* eslint-disable cypress/no-unnecessary-waiting */
 describe('Can load game', () => {
 	beforeEach(() => {
 		indexedDB.deleteDatabase('localforage');
