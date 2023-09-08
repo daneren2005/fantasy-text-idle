@@ -13,7 +13,8 @@
 		"type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
 		"format": "prettier --write .",
-		"start": "npm run dev"
+		"start": "npm run dev",
+		"deploy:itch": "butler push dist daneren2005/fantasy-text-idle:html"
 	},
 	"dependencies": {
 		"vue": "^3.3.4",
