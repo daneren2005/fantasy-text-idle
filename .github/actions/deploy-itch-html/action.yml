@@ -1,0 +1,21 @@
+name: "Deploy to Itch.io site"
+description: "Builds and pushes to Itch.io hosting"
+
+inputs:
+  butler-api-key: 
+    description: 'Butlet API Key'
+runs:
+  using: "composite"
+  steps: 
+    - uses: ./.github/actions/setup-node
+    - name: Build client
+      run: npm run build
+      shell: bash
+    - name: Deploy to Itch.io
+      uses: KikimoraGames/itch-publish@v0.0.3
+      with:
+        butlerApiKey: ${{ inputs.butler-api-key }}
+        gameData: ./dist
+        itchUsername: daneren2005
+        itchGameId: fantasy-text-idle
+        buildChannel: html
