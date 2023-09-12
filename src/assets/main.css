@@ -3,9 +3,12 @@
 #app {
 	max-width: 1280px;
 	margin: 0 auto;
-	padding: 2rem;
+	padding: 1rem;
 
 	font-weight: normal;
+
+	display: flex;
+	flex-direction: column;
 }
 
 a,
@@ -28,8 +31,21 @@ a,
 	}
 
 	#app {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
 		padding: 0 2rem;
+		flex-direction: row;
+		min-width: 100%;
+		min-height: 50vh;
+	}
+}
+
+@media (min-width: 1600px) {
+	#app {
+		min-width: 60vw;
+	}
+}
+
+@media (min-width: 1800px) {
+	#app {
+		min-width: 55vw;
 	}
 }
