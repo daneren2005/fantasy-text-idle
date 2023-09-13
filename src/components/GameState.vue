@@ -9,7 +9,7 @@
 		</h3>
 
 		<h3 style="margin-bottom: 0.5em">
-			Skill Points: {{ Math.floor(state.skill) }}
+			Skill Points: {{ Math.floor(state.resources['Skill Point'] ?? 0) }}
 			<span class="text-light-blue income">+{{ skillPointsPerSecond }}/sec</span>
 		</h3>
 
@@ -17,7 +17,7 @@
 			Resources:
 		</h3>
 		<div>
-			<div v-for="(value, name) in state.resources" :key="name">
+			<div v-for="name in validResourceNames" :key="name">
 				<resource-display :state="state" :name="name" />
 			</div>
 		</div>
@@ -30,6 +30,8 @@ import { computed } from 'vue';
 import ResourceDisplay from './ResourceDisplay.vue';
 import Actions from '@/game/types/actions';
 import nobilities from '@/game/config/nobilities';
+import ResourceTypes from '@/game/types/resource-types';
+import getResourceIncome from '@/game/utils/get-resource-income';
 
 const props = defineProps<{
 	state: State,
@@ -47,8 +49,9 @@ const formattedTime = computed(() => {
 const skillPointsPerSecond = computed(() => {
 	let nobility = nobilities[props.state.nobility];
 
-	return nobility.skillPoints;
+	return nobility.skillPoints + getResourceIncome(props.state, 'Skill Point').income;
 });
+const validResourceNames = computed(() => Object.keys(props.state.resources).filter(name => name !== 'Skill Point') as Array<ResourceTypes>);
 </script>
 
 <style scoped>

@@ -34,6 +34,16 @@ const skills: {[K in SkillTypes]:Skill} = {
 			base: 10,
 			exponent: 1.5
 		}
+	},
+	'Tax Collector': {
+		perks: {
+			taxPerProperty: 0.1
+		},
+		requireNobility: 'King',
+		upgradePoints: {
+			base: 10,
+			exponent: 1.5
+		}
 	}
 };
 export default skills;

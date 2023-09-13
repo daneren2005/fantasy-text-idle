@@ -25,6 +25,26 @@ const nobilities: Array<Nobility> = [
 			}
 		},
 		skillPoints: 3
+	},
+	{
+		name: 'Lord',
+		upgradeCosts: {
+			Gold: {
+				base: 200,
+				exponent: 2
+			}
+		},
+		skillPoints: 4
+	},
+	{
+		name: 'King',
+		upgradeCosts: {
+			Gold: {
+				base: 1_000,
+				exponent: 2
+			}
+		},
+		skillPoints: 4
 	}
 ];
 export default nobilities;

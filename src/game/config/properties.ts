@@ -61,6 +61,52 @@ const properties: {[K in PropertyTypes]:Property} = {
 			}
 		]
 	},
+	'Mine': {
+		upgradeCosts: {
+			Gold: {
+				base: 50,
+				exponent: 1.2
+			}
+		},
+		generate: [
+			{
+				name: 'Iron Ore',
+				quantity: 10
+			}
+		],
+		consume: [
+			{
+				name: 'Food',
+				quantity: 1
+			}
+		],
+		requireNobility: 'Land Owner'
+	},
+	'Blacksmith': {
+		upgradeCosts: {
+			Gold: {
+				base: 200,
+				exponent: 1.5
+			}
+		},
+		generate: [
+			{
+				name: 'Gold',
+				quantity: 10
+			}
+		],
+		consume: [
+			{
+				name: 'Iron Ore',
+				quantity: 20
+			},
+			{
+				name: 'Food',
+				quantity: 2
+			}
+		],
+		requireNobility: 'Merchant'
+	},
 	'Paper Mill': {
 		upgradeCosts: {
 			Gold: {
@@ -84,7 +130,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 				quantity: 1
 			}
 		],
-		requireNobility: 'Land Owner'
+		requireNobility: 'Lord'
 	},
 	'Publisher House': {
 		upgradeCosts: {
@@ -103,13 +149,76 @@ const properties: {[K in PropertyTypes]:Property} = {
 			{
 				name: 'Paper',
 				quantity: 20
+			}
+		],
+		requireNobility: 'Lord'
+	},
+	'University': {
+		upgradeCosts: {
+			Gold: {
+				base: 50,
+				exponent: 1.2
+			}
+		},
+		generate: [
+			{
+				name: 'Skill Point',
+				quantity: 1
+			}
+		],
+		consume: [
+			{
+				name: 'Paper',
+				quantity: 20
+			}
+		],
+		requireNobility: 'Lord'
+	},
+	'Clay Pit': {
+		upgradeCosts: {
+			Gold: {
+				base: 50,
+				exponent: 1.2
+			}
+		},
+		generate: [
+			{
+				name: 'Clay',
+				quantity: 10
+			}
+		],
+		consume: [
+			{
+				name: 'Food',
+				quantity: 1
+			}
+		],
+		requireNobility: 'King'
+	},
+	'Pottery Barn': {
+		upgradeCosts: {
+			Gold: {
+				base: 50,
+				exponent: 1.2
+			}
+		},
+		generate: [
+			{
+				name: 'Gold',
+				quantity: 10
+			}
+		],
+		consume: [
+			{
+				name: 'Clay',
+				quantity: 2
 			},
 			{
 				name: 'Food',
 				quantity: 2
 			}
 		],
-		requireNobility: 'Merchant'
+		requireNobility: 'King'
 	}
 };
 

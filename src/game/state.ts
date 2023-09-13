@@ -7,6 +7,7 @@ export default class State {
 	gametime = 0;
 	nobility = 0;
 	resources: {[K in ResourceTypes]?:number} = {
+		'Skill Point': 0,
 		Gold: 0,
 		Food: 10
 	};
@@ -14,14 +15,19 @@ export default class State {
 		'Farm': 0,
 		'Lumber Mill': 0,
 		'Food Stall': 1,
+		'Mine': 0,
+		'Blacksmith': 0,
 		'Paper Mill': 0,
-		'Publisher House': 0
+		'Publisher House': 0,
+		'University': 0,
+		'Clay Pit': 0,
+		'Pottery Barn': 0
 	};
-	skill: number = 0;
 	skills: {[K in SkillTypes]:number} = {
 		'Green Thumb': 0,
 		'Negotiator': 0,
-		'Lender': 0
+		'Lender': 0,
+		'Tax Collector': 0
 	};
 
 	save() {
@@ -31,7 +37,6 @@ export default class State {
 			nobility: this.nobility,
 			resources: this.resources,
 			properties: this.properties,
-			skill: this.skill,
 			skills: this.skills
 		});
 	}

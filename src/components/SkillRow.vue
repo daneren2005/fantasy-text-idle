@@ -38,16 +38,19 @@ function getPerks(config: Skill) {
 	let perks: Array<string> = [];
 
 	if(config.perks.propertyCostMultipler) {
-		perks.push(`Decrease property upgrade costs by: ${Math.round(config.perks.propertyCostMultipler * (level.value ?? 1) * 100)}%`);
+		perks.push(`Decrease property upgrade costs by: ${Math.round(config.perks.propertyCostMultipler * (level.value || 1) * 100)}%`);
 	}
 	if(config.perks.resourceMultipler) {
 		let resource: ResourceTypes;
 		for(resource in config.perks.resourceMultipler) {
-			perks.push(`Increase ${resource} production: ${Math.round((config.perks.resourceMultipler[resource] ?? 0) * (level.value ?? 1) * 100)}%`);
+			perks.push(`Increase ${resource} production: ${Math.round((config.perks.resourceMultipler[resource] ?? 0) * (level.value || 1) * 100)}%`);
 		}
+	}
+	if(config.perks.taxPerProperty) {
+		perks.push(`Collect ${Math.round(config.perks.taxPerProperty * (level.value || 1) * 10) / 10} gold per building`);
 	}
 
 	return perks;
 }
-const upgradeColor = computed(() => (props.state.skill >= nextLevelSkillPoints.value) ? 'primary' : 'error');
+const upgradeColor = computed(() => ((props.state.resources['Skill Point'] ?? 0) >= nextLevelSkillPoints.value) ? 'primary' : 'error');
 </script>

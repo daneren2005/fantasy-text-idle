@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import runGame from '../run-game';
 import State from '@/game/state';
 import properties from '@/game/config/properties';
+import PropertyTypes from '@/game/types/property-types';
+import skills from '@/game/config/skills';
 
 
 describe('run-game', () => {
@@ -70,10 +72,32 @@ describe('run-game', () => {
 
 	it('add skill points based on nobility level', () => {
 		runGame(state, 1_000);
-		expect(state.skill).toEqual(1);
+		expect(state.resources['Skill Point']).toEqual(1);
 
 		state.nobility++;
 		runGame(state, 1_000);
-		expect(state.skill).toBeGreaterThan(2);
+		expect(state.resources['Skill Point']).toBeGreaterThan(2);
+	});
+
+	it('taxes', () => {
+		let propertyName: PropertyTypes;
+		for(propertyName in state.properties) {
+			state.properties[propertyName] = 0;
+		}
+		state.properties['Farm'] = 2;
+		const goldRate = skills['Tax Collector'].perks.taxPerProperty ?? 0;
+
+		state.skills['Tax Collector'] = 1;
+
+		runGame(state, 1_000);
+		expect(state.resources.Gold).toEqual(goldRate * 2);
+		
+		state.skills['Tax Collector'] = 3;
+		runGame(state, 1_000);
+		expect(state.resources.Gold).toEqual(goldRate * 2 + goldRate * 6);
+
+		state.properties['Farm'] = 3;
+		runGame(state, 1_000);
+		expect(state.resources.Gold).toEqual(goldRate * 2 + goldRate * 6 + goldRate * 9);
 	});
 });

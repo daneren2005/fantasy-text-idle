@@ -7,6 +7,7 @@ interface Skill {
 	perks: {
 		resourceMultipler?: {[K in ResourceTypes]?:number}
 		propertyCostMultipler?: number
+		taxPerProperty?: number
 	}
 	requireNobility?: NobilityTypes
 }
