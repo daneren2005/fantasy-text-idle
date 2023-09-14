@@ -49,4 +49,12 @@ function getNextLevelCostProperty(state: State, propertyName: PropertyTypes): Re
 	}));
 }
 
-export { getNextLevelCostProperty };
+function getNextLevelCostSkill(state: State, skillName: SkillTypes): Resources {
+	let skill = skills[skillName];
+
+	return getNextLevelCost({
+		'Skill Point': skill.upgradePoints
+	}, state.skills[skillName]);
+}
+
+export { getNextLevelCostProperty, getNextLevelCostSkill };

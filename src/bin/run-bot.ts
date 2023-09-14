@@ -5,6 +5,7 @@ import canDoAction from './run-bot/can-do-action';
 import runGame from '@/game/actions/run-game';
 import formatTime from '@/game/utils/format-time';
 import runAction from './run-bot/run-action';
+import getBestSkillAction from './run-bot/get-best-skill-action';
 
 let state = new State();
 let running = true;
@@ -22,7 +23,9 @@ process.stdin.on('keypress', (str, key) => {
 	}
 });
 
+const start = performance.now();
 let nextAction = getBestAction(state);
+let nextSkill = getBestSkillAction(state);
 while(running) {
 	process.stdout.clearLine(0);
 	process.stdout.cursorTo(0);
@@ -34,11 +37,20 @@ while(running) {
 		nextAction = getBestAction(state);
 	}
 
+	// Run skill upgrades separately since we can have enough to upgrade these at almost any time
+	if(canDoAction(state, nextSkill)) {
+		process.stdout.write("\n" + serialize(state, nextSkill) + "\n");
+		
+		runAction(state, nextSkill);
+		nextSkill = getBestSkillAction(state);
+	}
+
 	runGame(state, 1_000);
 	// Just waiting so be can process keyboard io
 	await sleep(0);
 }
 process.stdout.write("\n" + serialize(state, 'production') + "\n");
+process.stdout.write(`Completed ${formatTime(state.gametime)} runtime in ${Math.round((performance.now() - start) / 1_000)} seconds\n`);
 process.exit();
 
 async function sleep(ms: number) {
