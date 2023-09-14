@@ -30,6 +30,24 @@ export default class State {
 		'Tax Collector': 0
 	};
 
+	clone() {
+		let clone = new State();
+
+		for(let prop in this) {
+			// eslint-disable-next-line
+			if(Object.getPrototypeOf(this[prop]).isPrototypeOf(Object) && Object.getPrototypeOf(this[prop]).isPrototypeOf(Object)) {
+				for(let subProp in this[prop]) {
+					// @ts-expect-error
+					clone[prop][subProp] = this[prop][subProp];
+				}
+			} else {
+				// @ts-expect-error
+				clone[prop] = this[prop];
+			}
+		}
+
+		return clone;
+	}
 	save() {
 		return JSON.stringify({
 			running: this.running,

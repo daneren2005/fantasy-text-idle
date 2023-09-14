@@ -32,20 +32,14 @@ import Actions from '@/game/types/actions';
 import nobilities from '@/game/config/nobilities';
 import ResourceTypes from '@/game/types/resource-types';
 import getResourceIncome from '@/game/utils/get-resource-income';
+import formatTime from '@/game/utils/format-time';
 
 const props = defineProps<{
 	state: State,
 	actions: Actions
 }>();
 
-const formattedTime = computed(() => {
-	let totalSeconds = Math.floor(props.state.gametime / 1_000);
-	let hours = Math.floor(totalSeconds / 3_600 % 60).toString().padStart(2, '0');
-	let minutes = Math.floor(totalSeconds / 60 % 60).toString().padStart(2, '0');
-	let seconds = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
-
-	return `${hours}:${minutes}:${seconds}`;
-});
+const formattedTime = computed(() => formatTime(props.state.gametime));
 const skillPointsPerSecond = computed(() => {
 	let nobility = nobilities[props.state.nobility];
 
