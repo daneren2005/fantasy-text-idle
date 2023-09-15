@@ -7,10 +7,11 @@ import takeResources from '../utils/take-resources';
 export default function buyProperty(state: State, propertyName: PropertyTypes) {
 	let costs = getNextLevelCostProperty(state, propertyName);
 	if(!hasResources(state, costs)) {
-		return;
+		return false;
 	}
 
 	takeResources(state, costs);
 	
 	state.properties[propertyName] = (state.properties[propertyName] ?? 0) + 1;
+	return true;
 }

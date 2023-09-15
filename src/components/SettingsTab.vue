@@ -64,7 +64,7 @@ const settingsBox = ref<HTMLInputElement>();
 
 function exportSettings() {
 	const state = props.state.save();
-	settingsString.value = btoa(state);
+	settingsString.value = btoa(JSON.stringify(state));
 
 	nextTick(() => {
 		settingsBox.value?.focus();

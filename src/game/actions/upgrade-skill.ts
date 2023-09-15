@@ -4,16 +4,17 @@ import SkillTypes from '../types/skill-types';
 
 export default function upgradeSkill(state: State, skillName: SkillTypes) {
 	if(!state.resources['Skill Point']) {
-		return;
+		return false;
 	}
 
 	let skill = skills[skillName];
 	let level = state.skills[skillName];
 	let upgradeCost = Math.floor(skill.upgradePoints.base * Math.pow(skill.upgradePoints.exponent, level));
 	if(state.resources['Skill Point'] < upgradeCost) {
-		return;
+		return false;
 	}
 
 	state.resources['Skill Point'] -= upgradeCost;
 	state.skills[skillName]++;
+	return true;
 }

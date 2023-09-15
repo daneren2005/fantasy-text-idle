@@ -1,0 +1,55 @@
+<div style="position: relative; height:98vh; width:98vw">
+	<canvas id="myChart"></canvas>
+</div>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('myChart');
+
+const nobilityLevels = __NOBILITY_LEVELS__;
+new Chart(ctx, {
+	type: 'line',
+	data: __DATA__,
+	options: {
+		scales: {
+			x: {
+				title: {
+					display: true,
+					text: 'Game Time'
+				}
+			},
+			y: {
+				beginAtZero: true,
+				ticks: {
+					callback: formatTime
+				}
+			}
+		},
+		interaction: {
+			intersect: false,
+			mode: 'index',
+		},
+		plugins: {
+			tooltip: {
+				callbacks: {
+					label: (args) => {
+						if(args.dataset.label === 'Nobility') {
+							return nobilityLevels[args.raw];
+						} else {
+							return `Wait ${formatTime(args.raw)}`;
+						}
+					}
+				}
+			}
+		}
+	}
+});
+
+function formatTime(value) {
+	let minutes = Math.floor(value / 60).toString().padStart(2, '0');
+	let seconds = Math.floor(value % 60).toString().padStart(2, '0');
+
+	return `${minutes}:${seconds}`;
+}
+</script>

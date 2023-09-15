@@ -6,7 +6,7 @@ import properties from '@/game/config/properties';
 import PropertyTypes from '@/game/types/property-types';
 import hasNobility from '@/game/utils/has-nobility';
 import nobilities from '@/game/config/nobilities';
-import getNextLevelCost from '@/game/utils/get-next-level-cost';
+import getNextLevelCost, { getNextLevelCostProperty } from '@/game/utils/get-next-level-cost';
 
 const propertyNames = Object.keys(properties) as Array<PropertyTypes>;
 export default function getBestAction(state: State): Action {
@@ -18,13 +18,15 @@ export default function getBestAction(state: State): Action {
 		let buildingGold = buildingCost.find(r => r.name === 'Gold')?.quantity ?? 0;
 
 		let nextNobility = nobilities[state.nobility + 1];
-		let nobilityCost = getNextLevelCost(nextNobility.upgradeCosts, 0);
-		let nobilityGold = nobilityCost.find(r => r.name === 'Gold')?.quantity ?? 0;
+		if(nextNobility) {
+			let nobilityCost = getNextLevelCost(nextNobility.upgradeCosts, 0);
+			let nobilityGold = nobilityCost.find(r => r.name === 'Gold')?.quantity ?? 0;
 
-		if(buildingGold * 2 >= nobilityGold) {
-			return {
-				type: 'upgrade-nobility'
-			};
+			if(buildingGold * 2 >= nobilityGold) {
+				return {
+					type: 'upgrade-nobility'
+				};
+			}
 		}
 	}
 
@@ -66,7 +68,40 @@ function getUpgradeBuildingAction(state: State, propertyName: PropertyTypes): Ac
 
 	// See if this upgrade puts us in the negative anywhere - fix it first if it does
 	let negativeResourceAction = getActionForNegativeIncome(clone);
-	return negativeResourceAction ?? {
+	if(negativeResourceAction) {
+		return negativeResourceAction;
+	}
+
+	// Try to make sure that we don't end up just waiting for wood to build up from single lumbermill
+	let costs = getNextLevelCostProperty(state, propertyName);
+	let nonGoldCosts = costs.filter(cost => cost.name !== 'Gold').map(cost => {
+		let income = getResourceIncome(state, cost.name).income;
+		let time = (cost.quantity - (state.resources[cost.name] ?? 0)) / income;
+
+		return {
+			name: cost.name,
+			quantity: cost.quantity,
+			income,
+			time
+		};
+	}).filter(c => c.time > 0);
+	if(nonGoldCosts.length) {
+		const goldCost = costs.find(cost => cost.name === 'Gold') as { name: ResourceTypes, quantity: number };
+		const goldIncome = getResourceIncome(state, 'Gold').income;
+		const goldTime = goldCost.quantity / goldIncome;
+
+		for(let i = 0; i < nonGoldCosts.length; i++) {
+			let nonGoldCost = nonGoldCosts[0];
+			if(nonGoldCost.time > (goldTime * 2)) {
+				let propertyOptions = getPropertiesWithResource(state, nonGoldCost.name);
+				if(propertyOptions.length) {
+					return getUpgradeBuildingAction(state, propertyOptions[0]);
+				}
+			}
+		}
+	}
+
+	return {
 		type: 'upgrade-property',
 		name: propertyName
 	};

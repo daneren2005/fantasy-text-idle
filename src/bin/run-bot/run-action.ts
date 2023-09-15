@@ -6,10 +6,12 @@ import upgradeSkill from '@/game/actions/upgrade-skill';
 
 export default function runAction(state: State, action: Action) {
 	if(action.type === 'upgrade-property') {
-		buyProperty(state, action.name);
+		return buyProperty(state, action.name);
 	} else if(action.type === 'upgrade-nobility') {
-		upgradeNobility(state);
+		return upgradeNobility(state);
 	} else if(action.type === 'upgrade-skill') {
-		upgradeSkill(state, action.name);
+		return upgradeSkill(state, action.name);
 	}
+
+	return false;
 }

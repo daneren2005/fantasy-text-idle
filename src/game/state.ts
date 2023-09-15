@@ -49,14 +49,14 @@ export default class State {
 		return clone;
 	}
 	save() {
-		return JSON.stringify({
+		return {
 			running: this.running,
 			gametime: this.gametime,
 			nobility: this.nobility,
 			resources: this.resources,
 			properties: this.properties,
 			skills: this.skills
-		});
+		};
 	}
 	load(config: any) {
 		Object.keys(config).forEach(key => {
