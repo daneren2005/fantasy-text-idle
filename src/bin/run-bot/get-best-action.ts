@@ -14,7 +14,8 @@ export default function getBestAction(state: State): Action {
 
 	// Upgrade nobility if less than twice the cost of the next building upgrade
 	if(buildingAction.type === 'upgrade-property') {
-		let buildingCost = getNextLevelCost(properties[buildingAction.name].upgradeCosts, state.properties[buildingAction.name]);
+		let property = properties[buildingAction.name];
+		let buildingCost = getNextLevelCost(property.upgradeCosts, state.properties[buildingAction.name]);
 		let buildingGold = buildingCost.find(r => r.name === 'Gold')?.quantity ?? 0;
 
 		let nextNobility = nobilities[state.nobility + 1];
@@ -22,7 +23,7 @@ export default function getBestAction(state: State): Action {
 			let nobilityCost = getNextLevelCost(nextNobility.upgradeCosts, 0);
 			let nobilityGold = nobilityCost.find(r => r.name === 'Gold')?.quantity ?? 0;
 
-			if(buildingGold * 2 >= nobilityGold) {
+			if(buildingGold * 1.5 >= nobilityGold) {
 				return {
 					type: 'upgrade-nobility'
 				};
@@ -49,7 +50,15 @@ function getBestBuildingAction(state: State): Action {
 	// Find next cheapest gold producing facility
 	let goldProperties = getPropertiesWithResource(state, 'Gold');
 	if(goldProperties.length) {
-		return getUpgradeBuildingAction(state, goldProperties[0]);
+		let goldPropertiesWithCost = goldProperties.map(propName => ({
+			name: propName,
+			// TODO: Include cost of upgrading dependencies
+			goldCost: getNextLevelCostProperty(state, propName).find(c => c.name === 'Gold')?.quantity ?? 0
+		}));
+		goldPropertiesWithCost.sort((a, b) => {
+			return a.goldCost - b.goldCost;
+		});
+		return getUpgradeBuildingAction(state, goldPropertiesWithCost[0].name);
 	}
 
 	throw new Error('WARNING: Should never be reached');
@@ -92,7 +101,7 @@ function getUpgradeBuildingAction(state: State, propertyName: PropertyTypes): Ac
 
 		for(let i = 0; i < nonGoldCosts.length; i++) {
 			let nonGoldCost = nonGoldCosts[0];
-			if(nonGoldCost.time > (goldTime * 2)) {
+			if(nonGoldCost.time > goldTime) {
 				let propertyOptions = getPropertiesWithResource(state, nonGoldCost.name);
 				if(propertyOptions.length) {
 					return getUpgradeBuildingAction(state, propertyOptions[0]);

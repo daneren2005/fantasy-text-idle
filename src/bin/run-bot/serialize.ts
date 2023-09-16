@@ -17,7 +17,11 @@ export default function serialize(state: State, action: Action | 'production'): 
 		}).join(', ');
 	} else if(action.type === 'upgrade-property') {
 		let costs = getNextLevelCost(properties[action.name].upgradeCosts, state.properties[action.name]);
-		return chalk.green(`Upgrade ${action.name} to level ${state.properties[action.name] + 1} for ${serializeResources(costs)}`);
+		let leftOverResources = costs.map(c => ({
+			name: c.name,
+			quantity: Math.floor((state.resources[c.name] ?? 0) - c.quantity)
+		}));
+		return chalk.green(`Upgrade ${action.name} to level ${state.properties[action.name] + 1} for ${serializeResources(costs)}`.padEnd(70, ' ')) + serializeResources(leftOverResources);
 	} else if(action.type === 'upgrade-nobility') {
 		let costs = getNextLevelCost(nobilities[state.nobility + 1].upgradeCosts, 0);
 		return chalk.blue(`Upgrade Nobility to ${nobilities[state.nobility + 1].name} for ${serializeResources(costs)}`);

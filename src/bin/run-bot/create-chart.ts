@@ -4,7 +4,8 @@ import formatTime from '@/game/utils/format-time';
 
 export default function createActionChart(state: State, actions: {[key:number]:string}) {
 	// Exclude skills for now since those are pretty linear
-	let actionTimes = Object.keys(actions).filter(a => a !== 'upgrade-skill').map(a => parseInt(a)) as Array<number>;
+	// @ts-expect-error
+	let actionTimes = Object.keys(actions).filter(a => !actions[a].includes('upgrade-skill')).map(a => parseInt(a)) as Array<number>;
 	let timeBetweenActions = [];
 	let nobilityUpgradeTimes = [];
 	for(let i = 1; i < actionTimes.length; i++) {
@@ -16,7 +17,7 @@ export default function createActionChart(state: State, actions: {[key:number]:s
 	let maxTimeBetweenActions = Math.max(...timeBetweenActions);
 	let nobilityMap: any = {};
 	for(let i = 1; i < actionTimes.length; i++) {
-		if(actions[actionTimes[i]] === 'upgrade-nobility') {
+		if(actions[actionTimes[i]].includes('upgrade-nobility')) {
 			nobilityLevel++;
 		}
 

@@ -41,11 +41,11 @@ const properties: {[K in PropertyTypes]:Property} = {
 		upgradeCosts: {
 			Gold: {
 				base: 4,
-				exponent: 1.5
+				exponent: 1.4
 			},
 			Wood: {
 				base: 5,
-				exponent: 2
+				exponent: 1.4
 			}
 		},
 		generate: [
@@ -85,7 +85,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 	'Blacksmith': {
 		upgradeCosts: {
 			Gold: {
-				base: 200,
+				base: 100,
 				exponent: 1.5
 			}
 		},
@@ -177,7 +177,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 	'Clay Pit': {
 		upgradeCosts: {
 			Gold: {
-				base: 50,
+				base: 500,
 				exponent: 1.2
 			}
 		},
@@ -198,7 +198,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 	'Pottery Barn': {
 		upgradeCosts: {
 			Gold: {
-				base: 50,
+				base: 500,
 				exponent: 1.2
 			}
 		},

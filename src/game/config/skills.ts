@@ -5,7 +5,7 @@ const skills: {[K in SkillTypes]:Skill} = {
 	'Green Thumb': {
 		perks: {
 			resourceMultipler: {
-				Food: 0.05
+				Food: 0.1
 			}
 		},
 		upgradePoints: {
@@ -15,7 +15,7 @@ const skills: {[K in SkillTypes]:Skill} = {
 	},
 	'Negotiator': {
 		perks: {
-			propertyCostMultipler: 0.01
+			propertyCostMultipler: 0.02
 		},
 		requireNobility: 'Land Owner',
 		upgradePoints: {

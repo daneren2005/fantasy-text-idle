@@ -10,7 +10,7 @@ const nobilities: Array<Nobility> = [
 		name: 'Land Owner',
 		upgradeCosts: {
 			Gold: {
-				base: 40,
+				base: 100,
 				exponent: 2
 			}
 		},
@@ -20,7 +20,7 @@ const nobilities: Array<Nobility> = [
 		name: 'Merchant',
 		upgradeCosts: {
 			Gold: {
-				base: 80,
+				base: 1_000,
 				exponent: 2
 			}
 		},
@@ -30,7 +30,7 @@ const nobilities: Array<Nobility> = [
 		name: 'Lord',
 		upgradeCosts: {
 			Gold: {
-				base: 200,
+				base: 10_000,
 				exponent: 2
 			}
 		},
@@ -40,7 +40,7 @@ const nobilities: Array<Nobility> = [
 		name: 'King',
 		upgradeCosts: {
 			Gold: {
-				base: 1_000,
+				base: 100_000,
 				exponent: 2
 			}
 		},
