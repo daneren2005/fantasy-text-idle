@@ -20,7 +20,7 @@ const nobilities: Array<Nobility> = [
 		name: 'Merchant',
 		upgradeCosts: {
 			Gold: {
-				base: 1_000,
+				base: 2_000,
 				exponent: 2
 			}
 		},
@@ -30,7 +30,7 @@ const nobilities: Array<Nobility> = [
 		name: 'Lord',
 		upgradeCosts: {
 			Gold: {
-				base: 10_000,
+				base: 50_000,
 				exponent: 2
 			}
 		},
@@ -40,11 +40,21 @@ const nobilities: Array<Nobility> = [
 		name: 'King',
 		upgradeCosts: {
 			Gold: {
-				base: 100_000,
+				base: 200_000,
 				exponent: 2
 			}
 		},
-		skillPoints: 4
+		skillPoints: 10
+	},
+	{
+		name: 'Emperor',
+		upgradeCosts: {
+			Gold: {
+				base: 1_000_000,
+				exponent: 2
+			}
+		},
+		skillPoints: 100
 	}
 ];
 export default nobilities;

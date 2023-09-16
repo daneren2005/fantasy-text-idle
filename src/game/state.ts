@@ -27,6 +27,7 @@ export default class State {
 		'Green Thumb': 0,
 		'Negotiator': 0,
 		'Lender': 0,
+		'Task Master': 0,
 		'Tax Collector': 0
 	};
 

@@ -35,9 +35,23 @@ const skills: {[K in SkillTypes]:Skill} = {
 			exponent: 1.5
 		}
 	},
+	'Task Master': {
+		perks: {
+			resourceMultipler: {
+				Food: 0.2,
+				Wood: 0.2,
+				'Iron Ore': 0.2
+			}
+		},
+		requireNobility: 'Lord',
+		upgradePoints: {
+			base: 10,
+			exponent: 1.5
+		}
+	},
 	'Tax Collector': {
 		perks: {
-			taxPerProperty: 0.1
+			taxPerProperty: 1
 		},
 		requireNobility: 'King',
 		upgradePoints: {

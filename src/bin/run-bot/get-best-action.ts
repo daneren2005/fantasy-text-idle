@@ -50,13 +50,20 @@ function getBestBuildingAction(state: State): Action {
 	// Find next cheapest gold producing facility
 	let goldProperties = getPropertiesWithResource(state, 'Gold');
 	if(goldProperties.length) {
-		let goldPropertiesWithCost = goldProperties.map(propName => ({
-			name: propName,
+		let goldPropertiesWithCost = goldProperties.map(propName => {
 			// TODO: Include cost of upgrading dependencies
-			goldCost: getNextLevelCostProperty(state, propName).find(c => c.name === 'Gold')?.quantity ?? 0
-		}));
+			let timesToWait = getNextLevelCostProperty(state, propName).map(c => {
+				let resourceIncome = getResourceIncome(state, c.name);
+				return c.quantity / resourceIncome.income;
+			});
+
+			return {
+				name: propName,
+				timeToWait: Math.max(...timesToWait)
+			};
+		});
 		goldPropertiesWithCost.sort((a, b) => {
-			return a.goldCost - b.goldCost;
+			return a.timeToWait - b.timeToWait;
 		});
 		return getUpgradeBuildingAction(state, goldPropertiesWithCost[0].name);
 	}

@@ -123,10 +123,6 @@ const properties: {[K in PropertyTypes]:Property} = {
 		consume: [
 			{
 				name: 'Wood',
-				quantity: 2
-			},
-			{
-				name: 'Food',
 				quantity: 1
 			}
 		],
@@ -136,7 +132,7 @@ const properties: {[K in PropertyTypes]:Property} = {
 		upgradeCosts: {
 			Gold: {
 				base: 200,
-				exponent: 1.5
+				exponent: 1.4
 			}
 		},
 		generate: [

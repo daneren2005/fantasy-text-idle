@@ -30,7 +30,7 @@ process.argv.forEach(arg => {
 		case 'start':
 			options.startAtNobility = parts[1];
 			break;
-		case 'stop':
+		case 'stop': case 'end':
 			options.stopAtNobility = parts[1];
 			break;
 	}
