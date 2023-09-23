@@ -9,8 +9,8 @@
 		</h3>
 
 		<h3 style="margin-bottom: 0.5em">
-			Skill Points: {{ Math.floor(state.resources['Skill Point'] ?? 0) }}
-			<span class="text-light-blue income">+{{ skillPointsPerSecond }}/sec</span>
+			Skill Points: {{ formatNumber(state.resources['Skill Point'] ?? 0) }}
+			<span class="text-light-blue income">+{{ formatNumber(skillPointsPerSecond) }}/sec</span>
 		</h3>
 
 		<h3>
@@ -33,6 +33,7 @@ import nobilities from '@/game/config/nobilities';
 import ResourceTypes from '@/game/types/resource-types';
 import getResourceIncome from '@/game/utils/get-resource-income';
 import formatTime from '@/game/utils/format-time';
+import formatNumber from '@/game/utils/format-number';
 
 const props = defineProps<{
 	state: State,
