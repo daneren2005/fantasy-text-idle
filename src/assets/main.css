@@ -28,6 +28,8 @@ a,
 	body {
 		display: flex;
 		place-items: center;
+		max-height: 100vh;
+		overflow: hidden;
 	}
 
 	#app {
@@ -35,6 +37,7 @@ a,
 		flex-direction: row;
 		min-width: 100%;
 		min-height: 80vh;
+		max-height: calc(100vh - 3em);
 	}
 }
 
