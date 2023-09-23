@@ -51,5 +51,10 @@ onUnmounted(() => actions.stop());
 	.header-wrapper {
 		margin-right: 2em;
 	}
+
+	.main-game-wrapper {
+		max-height: 100%;
+		overflow: auto;
+	}
 }
 </style>

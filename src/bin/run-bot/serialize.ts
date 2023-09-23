@@ -7,13 +7,14 @@ import ResourceTypes from '@/game/types/resource-types';
 import getResourceIncome from '@/game/utils/get-resource-income';
 import nobilities from '@/game/config/nobilities';
 import chalk from 'chalk';
+import formatNumber from '@/game/utils/format-number';
 
 export default function serialize(state: State, action: Action | 'production'): string {
 	if(action === 'production') {
 		let resources = Object.keys(state.resources) as Array<ResourceTypes>;
 		return 'Production: ' + resources.map(r => {
 			let income = getResourceIncome(state, r);
-			return `${r}: ${income.income >= 0 ? '+' : ''}${Math.round(income.income * 10) / 10} (${Math.floor(state.resources[r] ?? 0)})`;
+			return `${r}: ${income.income >= 0 ? '+' : ''}${formatNumber(income.income)} (${formatNumber(state.resources[r] ?? 0)})`;
 		}).join(', ');
 	} else if(action.type === 'upgrade-property') {
 		let costs = getNextLevelCost(properties[action.name].upgradeCosts, state.properties[action.name]);

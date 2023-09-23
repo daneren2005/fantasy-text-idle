@@ -6,7 +6,7 @@
 			<div v-for="perk in currentPerks" :key="perk">{{ perk }}</div>
 		</td>
 		<td>
-			Skill Points: {{ nextLevelSkillPoints }}
+			Skill Points: {{ formatNumber(nextLevelSkillPoints) }}
 		</td>
 		<td>
 			<v-btn @click="actions.upgradeSkill(skillName)" :color="upgradeColor">Upgrade</v-btn>
@@ -22,6 +22,7 @@ import State from '@/game/state';
 import Actions from '@/game/types/actions';
 import ResourceTypes from '@/game/types/resource-types';
 import SkillTypes from '@/game/types/skill-types';
+import formatNumber from '@/game/utils/format-number';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -47,7 +48,7 @@ function getPerks(config: Skill) {
 		}
 	}
 	if(config.perks.taxPerProperty) {
-		perks.push(`Collect ${Math.round(config.perks.taxPerProperty * (level.value || 1) * 10) / 10} gold per building`);
+		perks.push(`Collect ${formatNumber(config.perks.taxPerProperty * (level.value || 1))} gold per building`);
 	}
 
 	return perks;
